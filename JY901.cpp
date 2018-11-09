@@ -2,10 +2,10 @@
 #include <Wire.h>
 #include "JY901.h"
 
-const uint8_t  JY901_imu_cali_cmd[5] = {0xFF,0xAA,0x01,0x01,0x00};
-const uint8_t  JY901_mag_cali_cmd[5] = {0xFF,0xAA,0x01,0x02,0x01};
-const uint8_t JY901_quit_cali_cmd[5] = {0xFF,0xAA,0x01,0x00,0x00};
-const uint8_t JY901_save_conf_cmd[5] = {0xFF,0xAA,0x00,0x00,0x00};
+const uint8_t  JY901_imu_cali_cmd[5] = {0xFF,0xAA,0x01,0x01,0x00}; // never
+const uint8_t  JY901_mag_cali_cmd[5] = {0xFF,0xAA,0x01,0x02,0x01}; // been
+const uint8_t JY901_quit_cali_cmd[5] = {0xFF,0xAA,0x01,0x00,0x00}; // used?
+const uint8_t JY901_save_conf_cmd[5] = {0xFF,0xAA,0x00,0x00,0x00}; //
 
 CJY901::CJY901() {
   lastTime = millis();
@@ -24,14 +24,14 @@ void CJY901::startIIC(uint8_t address) {
 bool CJY901::readSerialData(uint8_t data) {
   rxBuffer[rxCnt] = data;
   rxCnt++;
-  if (rxBuffer[0] != 0x55) { //0x55为数据头识别码
+  if (rxBuffer[0] != 0x55) { // data start with 0x55 means it contains what we need
     rxCnt = 0;
     return false;
   }
   if (rxCnt<11) {
     return false;
   }
-  rxCnt = 0;  //归零计数
+  rxCnt = 0;  // reset count to 0
   uint8_t sum = 0;
   for (uint8_t cnt = 0; cnt<10; cnt++) {
     sum += rxBuffer[cnt];
@@ -41,9 +41,9 @@ bool CJY901::readSerialData(uint8_t data) {
     return false;
   }
   
-  switch (rxBuffer[1]) {
-    case 0x50:  memcpy(&JY901_data.time,    &rxBuffer[2], 8); break;    //时间
-    case 0x51:  memcpy(&JY901_data.acc,     &rxBuffer[2], 8); break;    //加速度
+  switch (rxBuffer[1]) { // these cases are based on Manual p26,27,28,29 and 30
+    case 0x50:  memcpy(&JY901_data.time,    &rxBuffer[2], 8); break;    // time
+    case 0x51:  memcpy(&JY901_data.acc,     &rxBuffer[2], 8); break;    // 加速度
     case 0x52:  memcpy(&JY901_data.gyro,    &rxBuffer[2], 8); break;    //角速度
     case 0x53:  memcpy(&JY901_data.angle,   &rxBuffer[2], 8); break;    //角度
     case 0x54:  memcpy(&JY901_data.mag,     &rxBuffer[2], 8); break;    //磁场 and temperature
