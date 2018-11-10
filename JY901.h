@@ -95,7 +95,6 @@ class CJY901 {
   public:
   CJY901();                              // construct function
   void attach(Stream & Serial_temp);     // bind serial port
-  void startIIC(uint8_t address = 0x50); // initial IIC with address 0x50
   bool readSerialData(uint8_t data);     // process recieved data
   bool receiveSerialData(void);          // recieve data from serial port
   void readData(uint8_t address,         // data address
@@ -141,7 +140,7 @@ class CJY901 {
   void     quitCali();                   // quit calibration
   void     caliIMU();                    // calibrate IMU
   void     caliMag();                    // calibrate Magnet sensor
-  unsigned long getLastTime();           // get last recieve time
+  unsigned long getLastTime();           // get last receive time
 
   private:
   Stream * Serial_ = NULL;
