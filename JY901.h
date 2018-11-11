@@ -101,46 +101,57 @@ class CJY901 {
                 uint8_t length,          // data length
                 uint8_t data[]           // address to store the data[length]
                );    
+  
+  /* ------------ (JY901 --> Host) functions ------------ */
+  uint16_t getTime(const char*);   // get time
+  double   getTemp();              // get temperature
+  double   getAccX();              // get X-axis acceleration
+  double   getAccY();              // get Y-axis acceleration
+  double   getAccZ();              // get Z-axis acceleration
+  double   getGyroX();             // get X-axis angular velocity
+  double   getGyroY();             // get Y-axis angular velocity
+  double   getGyroZ();             // get Z-axis angular velocity
+  double   getRoll();              // get X-axis(Roll) angle
+  double   getPitch();             // get Y-axis(Pitch) angle
+  double   getYaw();               // get Z-axis(Yaw) angle
+  double   getMagX();              // get X-axis magnetic field
+  double   getMagY();              // get Y-axis magnetic field
+  double   getMagZ();              // get Z-axis magnetic field
+  int16_t  getD0Status();          // get D0 Status
+  int16_t  getD1Status();          // get D1 Status
+  int16_t  getD2Status();          // get D2 Status
+  int16_t  getD3Status();          // get D3 Status
+  int32_t  getPressure();          // get pressure(JY-901B)
+  int32_t  getAltitude();          // get altitude(JY-901B)
+  int32_t  getLon();               // get lontitude
+  int32_t  getLat();               // get latitude
+  double   getGPSH();              // GPS height
+  double   getGPSY();              // GPS speed angle
+  double   getGPSV();              // GPS speed
+  double   getQuater(const char*); // get quaternion   
+  double   getDOP(const char*);    // get GPS DOP
+  unsigned long getLastTime();     // get last receive time
+  int16_t  getAccRawX();           // get X-axis raw acceleration data
+  int16_t  getAccRawY();           // get Y-axis raw acceleration data
+  int16_t  getAccRawZ();           // get Z-axis raw acceleration data
+  int16_t  getGyroRawX();          // get X-axis raw angular velocity data
+  int16_t  getGyroRawY();          // get Y-axis raw angular velocity data
+  int16_t  getGyroRawZ();          // get Z-axis raw angular velocity data
+  int16_t  getMagRawX();           // get X-axis raw magnetic field data
+  int16_t  getMagRawY();           // get Y-axis raw magnetic field data
+  int16_t  getMagRawZ();           // get Z-axis raw magnetic field data
 
-  uint16_t getTime(const char*);         // get time
-  double   getAccX();                    // get X-axis acceleration
-  double   getAccY();                    // get Y-axis acceleration
-  double   getAccZ();                    // get Z-axis acceleration
-  double   getGyroX();                   // get X-axis angular velocity
-  double   getGyroY();                   // get Y-axis angular velocity
-  double   getGyroZ();                   // get Z-axis angular velocity
-  double   getMagX();                    // get X-axis magnetic field
-  double   getMagY();                    // get Y-axis magnetic field
-  double   getMagZ();                    // get Z-axis magnetic field
-  int16_t  getAccRawX();                 // get X-axis raw acceleration data
-  int16_t  getAccRawY();                 // get Y-axis raw acceleration data
-  int16_t  getAccRawZ();                 // get Z-axis raw acceleration data
-  int16_t  getGyroRawX();                // get X-axis raw angular velocity data
-  int16_t  getGyroRawY();                // get Y-axis raw angular velocity data
-  int16_t  getGyroRawZ();                // get Z-axis raw angular velocity data
-  int16_t  getMagRawX();                 // get X-axis raw magnetic field data
-  int16_t  getMagRawY();                 // get Y-axis raw magnetic field data
-  int16_t  getMagRawZ();                 // get Z-axis raw magnetic field data
-  double   getRoll();                    // get X-axis(Roll) angle
-  double   getPitch();                   // get Y-axis(Pitch) angle
-  double   getYaw();                     // get Z-axis(Yaw) angle
-  double   getTemp();                    // get temperature
-  int32_t  getPressure();                // get pressure(JY-901B)
-  int32_t  getAltitude();                // get altitude(JY-901B)
-  int16_t  getD0Status();                // get D0 Status
-  int16_t  getD1Status();                // get D1 Status
-  int16_t  getD2Status();                // get D2 Status
-  int16_t  getD3Status();                // get D3 Status
-  int32_t  getLon();                     // get lontitude
-  int32_t  getLat();                     // get latitude
-  double   getGPSH();                    // GPS height
-  double   getGPSY();                    // GPS speed angle
-  double   getGPSV();                    // GPS speed
-  void     saveConf();                   // save configuration
-  void     quitCali();                   // quit calibration
-  void     caliIMU();                    // calibrate IMU
-  void     caliMag();                    // calibrate Magnet sensor
-  unsigned long getLastTime();           // get last receive time
+
+  /* ------------ (Host --> JY901) functions ------------ */
+  void saveConf();          // save configuration
+  void setCali(int);        // calibration mode
+  void setDir(int);         // set install direction
+  void enterHiber();        // enter hibernation or wake
+  void changeALG();         // change algorithm
+
+  // with total 33 functions, working on it
+
+
 
   private:
   Stream * Serial_ = NULL;
@@ -188,14 +199,24 @@ class CJY901 {
     }mag;
     
     struct {
-      int16_t d_0; int16_t d_1;
-      int16_t d_2; int16_t d_3;
+      int16_t d0; int16_t d1;
+      int16_t d2; int16_t d3;
     }dStatus;
     
     int32_t pressure; int32_t altitude; // JY-901B
     
     int32_t lon; int32_t lat;
     int16_t GPSHeight; int16_t GPSYaw; int32_t GPSVelocity;
+
+    struct {
+      int16_t q0; int16_t q1;
+      int16_t q2; int16_t q3;
+    }quater;
+
+    struct { // DOP stands for Dilution of Precision
+      int16_t sn; 
+      int16_t pdop; int16_t hdop; int16_t vdop;
+    }GPS_DOP;
     
   }JY901_data;
 };

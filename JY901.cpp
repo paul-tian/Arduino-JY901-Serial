@@ -41,16 +41,22 @@ bool CJY901::readSerialData(uint8_t data) {
     case 0x53:  memcpy(&JY901_data.angle,   &rxBuffer[2], 8); break; // angle
     case 0x54:  memcpy(&JY901_data.mag,     &rxBuffer[2], 8); break; // magnetic field and temperature
     case 0x55:  memcpy(&JY901_data.dStatus, &rxBuffer[2], 8); break; // D port status
-    case 0x56:  memcpy(&JY901_data.pressure,&rxBuffer[2], 4);        // pressure
-                memcpy(&JY901_data.altitude,&rxBuffer[6], 4);        // altitude
+
+    case 0x56:  memcpy(&JY901_data.pressure, &rxBuffer[2], 4); // pressure
+                memcpy(&JY901_data.altitude, &rxBuffer[6], 4); // altitude
                 break;
-    case 0x57:  memcpy(&JY901_data.lon,     &rxBuffer[2], 4);        // longtitude
-                memcpy(&JY901_data.lat,     &rxBuffer[6], 4);        // latitude
+
+    case 0x57:  memcpy(&JY901_data.lon, &rxBuffer[2], 4); // longtitude
+                memcpy(&JY901_data.lat, &rxBuffer[6], 4); // latitude
                 break;
+
     case 0x58:  memcpy(&JY901_data.GPSHeight,   &rxBuffer[2], 2);    //
                 memcpy(&JY901_data.GPSYaw,      &rxBuffer[4], 2);    // GPS data
                 memcpy(&JY901_data.GPSVelocity, &rxBuffer[6], 4);    //
                 break;
+
+    case 0x59:  memcpy(&JY901_data.quater,  &rxBuffer[2], 8); break; // quaternion
+    case 0x5A:  memcpy(&JY901_data.GPS_DOP, &rxBuffer[2], 8); break; // GPS DOP
   }
   lastTime = millis(); // last receive time
   return true;
@@ -64,10 +70,11 @@ bool CJY901::receiveSerialData(void) {
   return status;
 } // if data has been retrieved, return true
 
-void CJY901::readData(uint8_t address, uint8_t length, uint8_t data[]) {
-  readRegisters(address_, address, length, data);
-} // for user's own usage
+// void CJY901::readData(uint8_t address, uint8_t length, uint8_t data[]) {
+//   readRegisters(address_, address, length, data);
+// } // for user's own usage IIC?
 
+/* ------------ (JY901 --> Host) functions ------------ */
 uint16_t CJY901::getTime(const char* str) {
   if (strcmp(str,       "year") == 0) return       JY901_data.time.year; // get year
   if (strcmp(str,      "month") == 0) return      JY901_data.time.month; // get month
@@ -78,143 +85,138 @@ uint16_t CJY901::getTime(const char* str) {
   if (strcmp(str, "milisecond") == 0) return JY901_data.time.milisecond; // get milisecond
 
   return 0;
-}
+} // getTime()
 
-double CJY901::getAccX() { // 
-  return JY901_data.acc.x / (32768.0/16.0);
-}
+double CJY901::getTemp() {
+  return JY901_data.mag.temperature / 100.0; // are all the data(from mag acc gyro) same?
+} // may need further test 
+
+double CJY901::getAccX() {
+  return JY901_data.acc.x / (32768.0 / 16.0);
+} // getAccX() unit: G(gravity)
 
 double CJY901::getAccY() {
-  return JY901_data.acc.y / (32768.0/16.0);
-}
+  return JY901_data.acc.y / (32768.0 / 16.0);
+} // getAccY() unit: G(gravity)
 
 double CJY901::getAccZ() {
-  return JY901_data.acc.z / (32768.0/16.0);
-}
+  return JY901_data.acc.z / (32768.0 / 16.0);
+} // getAccZ() unit: G(gravity)
 
 double CJY901::getGyroX() {
-  return JY901_data.gyro.x / (32768.0/2000.0);
-}
+  return JY901_data.gyro.x / (32768.0 / 2000.0);
+} // getGyroX() unit: degree(s) per second
 
 double CJY901::getGyroY() {
-  return JY901_data.gyro.y / (32768.0/2000.0);
-}
+  return JY901_data.gyro.y / (32768.0 / 2000.0);
+} // getGyroY() unit: degree(s) per second
 
 double CJY901::getGyroZ() {
-  return JY901_data.gyro.z / (32768.0/2000.0);
-}
+  return JY901_data.gyro.z / (32768.0 / 2000.0);
+} // getGyroZ() unit: degree(s) per second
+
+/* -- Noticed that The Euler angles' order here is ---- */
+/* ----------- Z-Y-X, for more please visit ----------- */
+/* --- http://web.mit.edu/2.05/www/Handout/HO2.PDF ---- */
+double CJY901::getRoll() { // X-axis
+  return JY901_data.angle.roll / (32768.0 / 180.0);
+} // getRoll() unit: degree(s)
+
+double CJY901::getPitch() { // Y-axis
+  return JY901_data.angle.pitch / (32768.0/180.0);
+} // getPitch() unit: degree(s)
+
+double CJY901::getYaw() { // Z-axis
+  return JY901_data.angle.yaw / (32768.0/180.0);
+} // getYaw() unit: degree(s)
 
 double CJY901::getMagX() {
-  return JY901_data.mag.x / (32768.0/180.0);
-}
+  return JY901_data.mag.x / (32768.0 / 180.0);
+} // getMagX()
 
 double CJY901::getMagY() {
-  return JY901_data.mag.y / (32768.0/180.0);
-}
+  return JY901_data.mag.y / (32768.0 / 180.0);
+} // getMagY()
 
 double CJY901::getMagZ() {
-  return JY901_data.mag.z / (32768.0/180.0);
-}
+  return JY901_data.mag.z / (32768.0 / 180.0);
+} // getMagZ()
 
-int16_t CJY901::getAccRawX() {
-  return JY901_data.acc.x;
-}
+/* ------ The port status output depends on its mode. ------ */
+/* ----------- For more, please read the manual. ----------- */
+int16_t CJY901::getD0Status() { return JY901_data.dStatus.d0; }
+int16_t CJY901::getD1Status() { return JY901_data.dStatus.d1; }
+int16_t CJY901::getD2Status() { return JY901_data.dStatus.d2; }
+int16_t CJY901::getD3Status() { return JY901_data.dStatus.d3; }
 
-int16_t CJY901::getAccRawY() {
-  return JY901_data.acc.y;
-}
+int32_t CJY901::getPressure() {
+  return JY901_data.pressure;
+} // getPressure() unit: Pa
 
-int16_t CJY901::getAccRawZ() {
-  return JY901_data.acc.z;
-}
+int32_t CJY901::getAltitude() {
+  return JY901_data.altitude;
+} // getAltitude() unit: cm
 
-int16_t CJY901::getGyroRawX() {
-  return JY901_data.gyro.x;
-}
+/* ------------- According to NMEA8013, ------------ */
+/* ------- GPS output format is dd mm.mmmmm, ------- */
+/* ----- JY901 output format is ddmm(.)mmmmm, ------ */
+/* --------- dd and mm can be calculated ----------- */
+/* ---------- by divide(/) and modulo(%) ----------- */
+int32_t CJY901::getLon() { return JY901_data.lon; }
+int32_t CJY901::getLat() { return JY901_data.lat; }
 
-int16_t CJY901::getGyroRawY() {
-  return JY901_data.gyro.y;
-}
-
-int16_t CJY901::getGyroRawZ() {
-  return JY901_data.gyro.z;
-}
-
-int16_t CJY901::getMagRawX() {
-  return JY901_data.mag.x;
-}
-
-int16_t CJY901::getMagRawY() {
-  return JY901_data.mag.y;
-}
-
-int16_t CJY901::getMagRawZ() {
-  return JY901_data.mag.z;
-}
-
-double CJY901::getRoll() {
-  return JY901_data.angle.roll / (32768.0/180.0);
-}
-
-double CJY901::getPitch() {
-  return JY901_data.angle.pitch / (32768.0/180.0);
-}
-
-double CJY901::getYaw() {
-  return JY901_data.angle.yaw / (32768.0/180.0);
-}
-
- double CJY901::getTemp() {
-  return JY901_data.mag.temperature / 100.0;
-}
-
-int32_t CJY901::getPressure(void) {
-  return JY901_data.pressure; //Pa
-}
-
-int32_t CJY901::getAltitude(void) {
-  return JY901_data.altitude; //cm
-}
-
-int16_t CJY901::getD0Status() {
-  return JY901_data.dStatus.d_0;
-}
-
-int16_t CJY901::getD1Status() {
-  return JY901_data.dStatus.d_1;
-}
-
-int16_t CJY901::getD2Status() {
-  return JY901_data.dStatus.d_2;
-}
-
-int16_t CJY901::getD3Status() {
-  return JY901_data.dStatus.d_3;
-}
-
-int32_t CJY901::getLon(void) {
-  return JY901_data.lon;
-}
-
-int32_t CJY901::getLat(void) {
-  return JY901_data.lat;
-}
-
-double CJY901::getGPSH(void) {
+double CJY901::getGPSH() {
   return JY901_data.GPSHeight / 10.0;
-}
+} // get GPS Height, unit: m(meters)
 
-double CJY901::getGPSY(void) {   //度
+double CJY901::getGPSY() {
   return JY901_data.GPSYaw / 10.0;
-}
+} // get GPS Yaw, unit: degree(s)
 
-double CJY901::getGPSV(void) {   //km/h
+double CJY901::getGPSV() {
   return JY901_data.GPSVelocity / 1000.0;
-}
+} // get GPS Velocity, unit: kilometers per hour
 
-unsigned long CJY901::getLastTime(void) {
+double CJY901::getQuater(const char* str) {
+  if (strcmp(str, "q0") == 0) return JY901_data.quater.q0; // get q0
+  if (strcmp(str, "q1") == 0) return JY901_data.quater.q1; // get q1
+  if (strcmp(str, "q2") == 0) return JY901_data.quater.q2; // get q2
+  if (strcmp(str, "q3") == 0) return JY901_data.quater.q3; // get q3
+
+  return 0;
+} // getQuater()
+
+double CJY901::getDOP(const char* str) {
+  if (strcmp(str,   "sn") == 0) return   JY901_data.GPS_DOP.sn; // get number of satellites
+  if (strcmp(str, "pdop") == 0) return JY901_data.GPS_DOP.pdop; // get PDOP
+  if (strcmp(str, "hdop") == 0) return JY901_data.GPS_DOP.hdop; // get HDOP
+  if (strcmp(str, "vdop") == 0) return JY901_data.GPS_DOP.vdop; // get VDOP
+
+  return 0;
+} // getDOP()
+
+unsigned long CJY901::getLastTime() {
   return lastTime;
-}
+} // get last receive time
+
+/* ----------------- Get Raw data if needed ----------------- */
+int16_t  CJY901::getAccRawX() { return  JY901_data.acc.x; }  ///
+int16_t  CJY901::getAccRawY() { return  JY901_data.acc.y; }  ///
+int16_t  CJY901::getAccRawZ() { return  JY901_data.acc.z; }  ///
+
+int16_t CJY901::getGyroRawX() { return JY901_data.gyro.x; }  ///
+int16_t CJY901::getGyroRawY() { return JY901_data.gyro.y; }  ///
+int16_t CJY901::getGyroRawZ() { return JY901_data.gyro.z; }  ///
+
+int16_t  CJY901::getMagRawX() { return  JY901_data.mag.x; }  ///
+int16_t  CJY901::getMagRawY() { return  JY901_data.mag.y; }  ///
+int16_t  CJY901::getMagRawZ() { return  JY901_data.mag.z; }  ///
+/* ----------------- Raw data Functions end ----------------- */
+
+/* ------------ (Host --> JY901) functions ------------ */
+
+
+
 
 /* --- The following functions are for IIC only. I'm working on the Serial method funcs. ---- */
 //
