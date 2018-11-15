@@ -144,14 +144,44 @@ class CJY901 {
   /* ------------ (Host --> JY901) functions ------------ */
   void saveConf();          // save configuration
   void setCali(int);        // calibration mode
-  void setDir(int);         // set install direction
+  void setDir(bool);         // set install direction
   void enterHiber();        // enter hibernation or wake
-  void changeALG(int);      // change algorithm
-  void autoCaliGyro(int);   // enable auto gyro calibration
-  void confReport(uint8_t); // configure report contents
+  void changeALG(bool);      // change algorithm
+  void autoCaliGyro(bool);   // enable auto gyro calibration
+  /* not figured out proper input data struct*/ void confReport(); // configure report contents
+  void setReportRate(int);
+  void setBaudRate(int);
 
-  // with total 33 functions, working on it
+  /* not figured out proper input data struct*/ void setAXoffset();
+  /* not figured out proper input data struct*/ void setAYoffset();
+  /* not figured out proper input data struct*/ void setAZoffset();
 
+  /* not figured out proper input data struct*/ void setGXoffset();
+  /* not figured out proper input data struct*/ void setGYoffset();
+  /* not figured out proper input data struct*/ void setGZoffset();
+
+  /* not figured out proper input data struct*/ void setHXoffset();
+  /* not figured out proper input data struct*/ void setHYoffset();
+  /* not figured out proper input data struct*/ void setHZoffset();
+
+  void setD0mode(int);
+  void setD1mode(int);
+  void setD2mode(int);
+  void setD3mode(int);
+
+  /* not figured out proper input data struct*/ void setD0PWMH();
+  /* not figured out proper input data struct*/ void setD1PWMH();
+  /* not figured out proper input data struct*/ void setD2PWMH();
+  /* not figured out proper input data struct*/ void setD3PWMH();
+
+  /* not figured out proper input data struct*/ void setD0PWMT();
+  /* not figured out proper input data struct*/ void setD1PWMT();
+  /* not figured out proper input data struct*/ void setD2PWMT();
+  /* not figured out proper input data struct*/ void setD3PWMT();
+  
+  void setIICaddr(int);
+  void turnLED(bool);
+  void setGPSrate(int);
 
 
   private:

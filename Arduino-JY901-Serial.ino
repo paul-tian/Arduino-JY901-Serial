@@ -5,12 +5,15 @@
 // --------------------------------------------------------------------------------
 unsigned long previousMillis = 0;
 const long interval = 5000;
+bool flag = true;
 void Sleep() {
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
-    JY901.enterHiber();
-  }
+	unsigned long currentMillis = millis();
+	if (currentMillis - previousMillis >= interval) {
+		previousMillis = currentMillis;
+		flag = !flag;
+		//JY901.enterHiber();
+		JY901.turnLED(flag);
+	}
 }
 // --------------------------------------------------------------------------------
 
@@ -25,9 +28,9 @@ JY901     MKR1000/1010
 
 
 void setup() {
-  Serial.begin(9600);  
-  Serial1.begin(9600);
-  JY901.attach(Serial1);
+	Serial.begin(9600);
+	Serial1.begin(9600);
+	JY901.attach(Serial1);
 }
 
 void loop() {
@@ -47,11 +50,11 @@ void loop() {
 }
 
 void printDate() { // a demo code from official, but I believe it's for GPS combination
-  Serial.print("Time:20");
-  Serial.print(JY901.getTime("year"));
-  Serial.print("-");
-  Serial.print(JY901.getTime("month"));
-  Serial.print("-");
+	Serial.print("Time:20");
+	Serial.print(JY901.getTime("year"));
+	Serial.print("-");
+	Serial.print(JY901.getTime("month"));
+	Serial.print("-");
   Serial.print(JY901.getTime("day"));
   Serial.print(" ");
   Serial.print(JY901.getTime("hour"));

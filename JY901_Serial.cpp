@@ -219,6 +219,14 @@ void CJY901::enterHiber() {
   Serial1.write(JY901_Hibernate, 5);
 } // enter hibernation mode, send again to wake
 
+void CJY901::turnLED(bool flag) {
+  const uint8_t JY901_LED_on[5]  = {0xFF,0xAA,0x1B,0x00,0x00};
+  const uint8_t JY901_LED_off[5] = {0xFF,0xAA,0x1B,0x01,0x00};
+  if(flag)
+    Serial1.write(JY901_LED_on, 5);
+  else
+    Serial1.write(JY901_LED_off, 5);
+} // enter hibernation mode, send again to wake
 
 
 /* --- The following functions are for IIC only. I'm working on the Serial method funcs. ---- */
