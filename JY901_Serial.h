@@ -2,9 +2,9 @@
 #define _JY901_SERIAL_H_
 
 /* 
-All these defines (from JY901_SAVE to JY901_GPSVH) 
-are all from Official Mannual PDF (Chinese Ver., p31,32 and p41,42)
-                          !!important!!
+All these defines (from JY901_SAVE to JY901_GPSVH) are all for TO-MODULE functions
+from Official Mannual PDF (Chinese Ver., p31,32 and p41,42)
+-------------------------------- !!important!! --------------------------------
 --- The translation of terms might be inaccurate, please issue if find any. ---
 */
 
@@ -34,7 +34,6 @@ are all from Official Mannual PDF (Chinese Ver., p31,32 and p41,42)
 #define JY901_D1PWMT       0x17 // D1 PWM period
 #define JY901_D2PWMT       0x18 // D2 PWM period
 #define JY901_D3PWMT       0x19 // D3 PWM period
-
 #define JY901_IICADDR      0x1a // IIC address
 #define JY901_LEDOFF       0x1b // turn off LED
 #define JY901_GPSBAUD      0x1c // GPS connection baud rate
@@ -147,7 +146,9 @@ class CJY901 {
   void setCali(int);        // calibration mode
   void setDir(int);         // set install direction
   void enterHiber();        // enter hibernation or wake
-  void changeALG();         // change algorithm
+  void changeALG(int);      // change algorithm
+  void autoCaliGyro(int);   // enable auto gyro calibration
+  void confReport(uint8_t); // configure report contents
 
   // with total 33 functions, working on it
 

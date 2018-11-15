@@ -1,6 +1,19 @@
 #include <Wire.h>
 #include "JY901_Serial.h"
 
+/* test field */
+// --------------------------------------------------------------------------------
+unsigned long previousMillis = 0;
+const long interval = 5000;
+void Sleep() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    JY901.enterHiber();
+  }
+}
+// --------------------------------------------------------------------------------
+
 /*
 Modified for MKR1000 and MKR WiFi 1010.
 JY901     MKR1000/1010
@@ -19,7 +32,6 @@ void setup() {
 
 void loop() {
 	JY901.receiveSerialData();
-
 	//print received data. Data was received in serialEvent;
 	printAcc();
 	printGyro();
@@ -30,7 +42,8 @@ void loop() {
 	Serial.println("");
 
 	delay(500);
-
+	Sleep();
+	// add time counting and send sleep
 }
 
 void printDate() { // a demo code from official, but I believe it's for GPS combination

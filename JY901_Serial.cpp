@@ -214,7 +214,10 @@ int16_t  CJY901::getMagRawZ() { return  JY901_data.mag.z; }  ///
 /* ----------------- Raw data Functions end ----------------- */
 
 /* ------------ (Host --> JY901) functions ------------ */
-
+void CJY901::enterHiber() {
+  const uint8_t JY901_Hibernate[5] = {0xFF,0xAA,0x22,0x01,0x00};
+  Serial1.write(JY901_Hibernate, 5);
+} // enter hibernation mode, send again to wake
 
 
 
