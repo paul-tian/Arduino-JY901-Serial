@@ -1,5 +1,5 @@
-#ifndef _JY901_H_
-#define _JY901_H_
+#ifndef _JY901_SERIAL_H_
+#define _JY901_SERIAL_H_
 
 /* 
 All these defines (from JY901_SAVE to JY901_GPSVH) 

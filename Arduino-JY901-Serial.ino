@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include "JY901.h"
+#include "JY901_Serial.h"
 
 /*
 Modified for MKR1000 and MKR WiFi 1010.

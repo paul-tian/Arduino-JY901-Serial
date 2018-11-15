@@ -1,6 +1,6 @@
 #include <string.h>
 #include <Wire.h>
-#include "JY901.h"
+#include "JY901_Serial.h"
 
 const uint8_t  JY901_imu_cali_cmd[5] = {0xFF,0xAA,0x01,0x01,0x00}; // start
 const uint8_t  JY901_mag_cali_cmd[5] = {0xFF,0xAA,0x01,0x02,0x01}; // working on
