@@ -6,4 +6,6 @@ The original repo [arduino-JY901](https://github.com/BGD-Libraries/arduino-JY901
 but this repo focus on the Serial connection and implement all the function given by the official.  
 
 Please feel free to open a issue if needed, **Chinese** and **English** are preferred, 
-other languages will be translated by Google Translator.
+other languages will be translated by Google Translator.  
+
+Control functions are on the way.
