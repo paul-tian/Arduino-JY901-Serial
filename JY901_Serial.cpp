@@ -1,11 +1,7 @@
 #include <string.h>
 #include <Wire.h>
 #include "JY901_Serial.h"
-
-const uint8_t  JY901_imu_cali_cmd[5] = {0xFF,0xAA,0x01,0x01,0x00}; // start
-const uint8_t  JY901_mag_cali_cmd[5] = {0xFF,0xAA,0x01,0x02,0x01}; // working on
-const uint8_t JY901_quit_cali_cmd[5] = {0xFF,0xAA,0x01,0x00,0x00}; // these
-const uint8_t JY901_save_conf_cmd[5] = {0xFF,0xAA,0x00,0x00,0x00}; // commands
+#include "JY901_Control.h"
 
 CJY901::CJY901() {
   lastTime = millis();
@@ -220,46 +216,14 @@ void CJY901::enterHiber() {
 } // enter hibernation mode, send again to wake
 
 void CJY901::turnLED(bool flag) {
-  const uint8_t JY901_LED_on[5]  = {0xFF,0xAA,0x1B,0x00,0x00};
-  const uint8_t JY901_LED_off[5] = {0xFF,0xAA,0x1B,0x01,0x00};
-  if(flag)
-    Serial1.write(JY901_LED_on, 5);
-  else
-    Serial1.write(JY901_LED_off, 5);
+  if(flag) {
+    Serial1.write(JY901_LED_ON, 5);
+    Serial.println("LED on");
+  } else {
+    Serial1.write(JY901_LED_OFF, 5);
+    Serial.println("LED off");
+  }
 } // enter hibernation mode, send again to wake
-
-
-/* --- The following functions are for IIC only. I'm working on the Serial method funcs. ---- */
-//
-// void CJY901::saveConf(void) {
-//   // if (transferMode_) {
-//      uint8_t cmd[2] = {0x00,0x00};
-//     writeRegister(address_, JY901_SAVE, 2, cmd);
-//   //}
-// }
-
-// void CJY901::quitCali(void) {
-//   // if (transferMode_) {
-//      uint8_t cmd[2] = {0x00,0x00};
-//     writeRegister(address_, JY901_CALSW, 2, cmd);
-//   //}
-// }
-
-// void CJY901::caliIMU(void) {
-//   // if (transferMode_) {
-//      uint8_t cmd[2] = {0x01,0x00};
-//     writeRegister(address_, JY901_CALSW, 2, cmd);
-//   //}
-// }
-
-// void CJY901::caliMag(void) {
-//   // if (transferMode_) {
-//      uint8_t cmd[2] = {0x02,0x00};
-//     writeRegister(address_, JY901_CALSW, 2, cmd);
-//   //}
-// }
-//
-/* ---------------------------- End Line ---------------------------- */
 
 
 void CJY901::readRegisters(uint8_t deviceAddr, uint8_t addressToRead, uint8_t bytesToRead, uint8_t * dest) {

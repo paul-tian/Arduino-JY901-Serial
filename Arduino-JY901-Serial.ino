@@ -36,14 +36,13 @@ void setup() {
 void loop() {
 	JY901.receiveSerialData();
 	//print received data. Data was received in serialEvent;
-	printAcc();
-	printGyro();
-	printMag();
-	printAngle();
+//	printAcc();
+//	printGyro();
+//	printMag();
+//	printAngle();
 	Serial.print("Temp:");
 	Serial.print(JY901.getTemp());
 	Serial.println("");
-
 	delay(500);
 	Sleep();
 	// add time counting and send sleep
