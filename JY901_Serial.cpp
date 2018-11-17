@@ -270,37 +270,43 @@ int16_t CJY901::getMagRawZ() {
 /* ----------------- Raw data Functions end ----------------- */
 
 /* ------------ (Host --> JY901) functions ------------ */
-void CJY901::saveConf() {
-  ;
+void CJY901::saveConf(int saveFlag) {
+  JY901_SAVECONF[3] = saveConf;
+  Serial1.write(JY901_SAVECONF, 5);
 }  // save configuration
 
-void CJY901::setCali(int) {
-  ;
+void CJY901::setCali(int caliFlag) {
+  JY901_SETCALI[3] = caliFlag;
+  Serial1.write(JY901_SETCALI, 5);
 }  // calibration mode
 
-void CJY901::setDir(bool) {
-  ;
+void CJY901::setDir(int dirFlag) {
+  JY901_INSTALL[3] = dirFlag;
+  Serial1.write(JY901_INSTALL, 5);
 }  // set install direction
 
 void CJY901::enterHiber() {
   Serial1.write(JY901_SLEEP, 5);
 }  // enter hibernation mode, send again to wake
 
-void CJY901::changeALG(bool) {
-  ;
+void CJY901::changeALG(int algFlag) {
+  JY901_ALGAXIS[3] = algFlag;
+  Serial1.write(JY901_ALGAXIS, 5);
 }  // change algorithm
 
-void CJY901::autoCaliGyro(bool) {
-  ;
-}  // enable auto gyro calibration
+void CJY901::autoCaliGyro(int gyroFlag) {
+  JY901_GYROAUTOCALI[3] = gyroFlag;
+  Serial1.write(JY901_GYROAUTOCALI, 5);
+}  // auto gyro calibration
 
 void CJY901::confReport() {
   ;
   /* not figured out proper input data struct*/
 }
 
-void CJY901::setReportRate(int) {
-  ;
+void CJY901::setReportRate(int rateFlag) {
+  JY901_RPTRT[3] = rateFlag;
+  Serial1.write(JY901_RPTRT, 5);
 }
 
 void CJY901::setBaudRate(int) {
@@ -397,14 +403,13 @@ void CJY901::setIICaddr(int) {
   ;
 }
 
-void CJY901::turnLED(bool flag) {
-  if (flag) {
-    Serial1.write(JY901_LED_ON, 5);
+void CJY901::turnLED(int ledFlag) {
+  JY901_LED[3] = ledFlag;
+  Serial1.write(JY901_LED, 5);
+  if (ledFlag == 0)
     Serial.println("LED on");
-  } else {
-    Serial1.write(JY901_LED_OFF, 5);
+  else if (ledFlag == 1)
     Serial.println("LED off");
-  }
 }  // turn off LED, send again to lighten
 
 void CJY901::setGPSrate(int) {

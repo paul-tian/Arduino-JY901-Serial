@@ -50,63 +50,109 @@ class CJY901 {
   int16_t getMagRawZ();           // get Z-axis raw magnetic field data
 
   /* ------------ (Host --> JY901) functions ------------ */
-  void saveConf();          // save configuration
-  void setCali(int);        // calibration mode
-  void setDir(bool);        // set install direction
-  void enterHiber();        // enter hibernation or wake
-  void changeALG(bool);     // change algorithm
-  void autoCaliGyro(bool);  // enable auto gyro calibration
-  /* not figured out proper input data struct*/ void
-  confReport();  // configure report contents
+  void saveConf(int);      // save configuration
+  void setCali(int);       // calibration mode
+  void setDir(int);        // set install direction
+  void enterHiber();       // enter hibernation or wake
+  void changeALG(int);     // change algorithm
+  void autoCaliGyro(int);  // enable auto gyro calibration
+  void confReport();       // configure report contents
   void setReportRate(int);
   void setBaudRate(int);
 
-  /* not figured out proper input data struct*/ void setAXoffset();
-  /* not figured out proper input data struct*/ void setAYoffset();
-  /* not figured out proper input data struct*/ void setAZoffset();
+  void setAXoffset();
+  void setAYoffset();
+  void setAZoffset();
 
-  /* not figured out proper input data struct*/ void setGXoffset();
-  /* not figured out proper input data struct*/ void setGYoffset();
-  /* not figured out proper input data struct*/ void setGZoffset();
+  void setGXoffset();
+  void setGYoffset();
+  void setGZoffset();
 
-  /* not figured out proper input data struct*/ void setHXoffset();
-  /* not figured out proper input data struct*/ void setHYoffset();
-  /* not figured out proper input data struct*/ void setHZoffset();
+  void setHXoffset();
+  void setHYoffset();
+  void setHZoffset();
 
   void setD0mode(int);
   void setD1mode(int);
   void setD2mode(int);
   void setD3mode(int);
 
-  /* not figured out proper input data struct*/ void setD0PWMH();
-  /* not figured out proper input data struct*/ void setD1PWMH();
-  /* not figured out proper input data struct*/ void setD2PWMH();
-  /* not figured out proper input data struct*/ void setD3PWMH();
+  void setD0PWMH();
+  void setD1PWMH();
+  void setD2PWMH();
+  void setD3PWMH();
 
-  /* not figured out proper input data struct*/ void setD0PWMT();
-  /* not figured out proper input data struct*/ void setD1PWMT();
-  /* not figured out proper input data struct*/ void setD2PWMT();
-  /* not figured out proper input data struct*/ void setD3PWMT();
+  void setD0PWMT();
+  void setD1PWMT();
+  void setD2PWMT();
+  void setD3PWMT();
 
   void setIICaddr(int);
-  void turnLED(bool);
+  void turnLED(int);
   void setGPSrate(int);
+
+  struct {
+    struct {
+      uint8_t confl;
+      uint8_t confh;
+    } report;
+
+    struct {
+      uint8_t axl;
+      uint8_t axh;
+      uint8_t ayl;
+      uint8_t ayh;
+      uint8_t azl;
+      uint8_t azh;
+    } aoffset;
+
+    struct {
+      int8_t gxl;
+      int8_t gxh;
+      int8_t gyl;
+      int8_t gyh;
+      int8_t gzl;
+      int8_t gzh;
+    } goffset;
+
+    struct {
+      int8_t hxl;
+      int8_t hxh;
+      int8_t hyl;
+      int8_t hyh;
+      int8_t hzl;
+      int8_t hzh;
+    } hoffset;
+
+    struct {
+      int8_t hd0l;
+      int8_t hd0h;
+      int8_t hd1l;
+      int8_t hd1h;
+      int8_t hd2l;
+      int8_t hd2h;
+      int8_t hd3l;
+      int8_t hd3h;
+    } pwmh;
+
+    struct {
+      int8_t td0l;
+      int8_t td0h;
+      int8_t td1l;
+      int8_t td1h;
+      int8_t td2l;
+      int8_t td2h;
+      int8_t td3l;
+      int8_t td3h;
+    } pwmt;
+
+  } JY901_ctrl;
 
  private:
   Stream* Serial_ = NULL;
-  uint8_t address_ = 0x50;  // default device address 0x50
-  bool transferMode_ = 0;
   unsigned long lastTime;
   uint8_t rxBuffer[12] = {0};
   uint8_t rxCnt = 0;
-  void readRegisters(uint8_t deviceAddr,
-                     uint8_t addressToRead,
-                     uint8_t bytesToRead,
-                     uint8_t* dest);
-  void writeRegister(uint8_t deviceAddr,
-                     uint8_t addressToWrite,
-                     uint8_t bytesToWrite,
-                     uint8_t* dataToWrite);
 
   struct {
     struct {

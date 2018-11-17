@@ -42,6 +42,10 @@
 #define JY901_LEDOFF 0x1B         // turn off LED
 #define JY901_GPSBAUD 0x1C        // GPS connection baud rate
 
+#define JY901_HIBERNATE 0x22  // module install direction
+#define JY901_DIRECTION 0x23  // module install direction
+#define JY901_CHANGEALG 0x24  // module install direction
+
 #define JY901_YYMM 0x30       // year and month
 #define JY901_DDHH 0x31       // day and hour
 #define JY901_MMSS 0x32       // minute and second
@@ -75,18 +79,29 @@
 #define JY901_GPSYAW 0x4E     // GPS speed angle
 #define JY901_GPSVL 0x4F      // GPS speed(ground speed) low word
 #define JY901_GPSVH 0x50      // GPS speed(ground speed) high word
-#define JY901_Q0 \
-  0x51  // quaternion Q0 (I'm not a specialist and just translated this)
-#define JY901_Q1 \
-  0x52  // quaternion Q1 (I'm not a specialist and just translated this)
-#define JY901_Q2 \
-  0x53  // quaternion Q2 (I'm not a specialist and just translated this)
-#define JY901_Q3 \
-  0x54  // quaternion Q3 (I'm not a specialist and just translated this)
 
-const uint8_t JY901_SLEEP[5] = {JY901_CONTROL, 0x22, 0x01, 0x00};
+// I'm not a specialist and just translated this
+#define JY901_Q0 0x51  // quaternion Q0
+#define JY901_Q1 0x52  // quaternion Q1
+#define JY901_Q2 0x53  // quaternion Q2
+#define JY901_Q3 0x54  // quaternion Q3
 
-const uint8_t JY901_LED_ON[5] = {JY901_CONTROL, JY901_LEDOFF, 0x00, 0x00};
-const uint8_t JY901_LED_OFF[5] = {JY901_CONTROL, JY901_LEDOFF, 0x01, 0x00};
+#define JY901_GYROAUTOCALI 0x63  // gyroscope auto calibration
+
+uint8_t JY901_SAVECONF[5] = {JY901_CONTROL, JY901_SAVE, 0, 0x00};
+
+uint8_t JY901_SETCALI[5] = {JY901_CONTROL, JY901_CALSW, 0, 0x00};
+
+uint8_t JY901_INSTALL[5] = {JY901_CONTROL, JY901_DIRECTION, 0, 0x00};
+
+const uint8_t JY901_SLEEP[5] = {JY901_CONTROL, JY901_HIBERNATE, 0x01, 0x00};
+
+uint8_t JY901_ALGAXIS[5] = {JY901_CONTROL, JY901_CHANGEALG, 0, 0x00};
+
+uint8_t JY901_GYROAUTOCALI[5] = {JY901_CONTROL, JY901_GYROAUTOCALI, 0, 0x00};
+
+uint8_t JY901_RPTRT[5] = {JY901_CONTROL, JY901_RRATE, 0, 0x00};
+
+uint8_t JY901_LED[5] = {JY901_CONTROL, JY901_LEDOFF, 0, 0x00};
 
 #endif

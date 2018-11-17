@@ -12,7 +12,10 @@ void Sleep() {
     previousMillis = currentMillis;
     flag = !flag;
     // JY901.enterHiber();
-    JY901.turnLED(flag);
+    if (flag)
+      JY901.turnLED(0);
+    else
+      JY901.turnLED(1);
   }
 }
 // --------------------------------------------------------------------------------
