@@ -98,52 +98,52 @@ class CJY901 {
     } report;
 
     struct {
-      uint8_t axl;
-      uint8_t axh;
-      uint8_t ayl;
-      uint8_t ayh;
-      uint8_t azl;
-      uint8_t azh;
+      int8_t xl;
+      int8_t xh;
+      int8_t yl;
+      int8_t yh;
+      int8_t zl;
+      int8_t zh;
     } aoffset;
 
     struct {
-      int8_t gxl;
-      int8_t gxh;
-      int8_t gyl;
-      int8_t gyh;
-      int8_t gzl;
-      int8_t gzh;
+      int8_t xl;
+      int8_t xh;
+      int8_t yl;
+      int8_t yh;
+      int8_t zl;
+      int8_t zh;
     } goffset;
 
     struct {
-      int8_t hxl;
-      int8_t hxh;
-      int8_t hyl;
-      int8_t hyh;
-      int8_t hzl;
-      int8_t hzh;
+      int8_t xl;
+      int8_t xh;
+      int8_t yl;
+      int8_t yh;
+      int8_t zl;
+      int8_t zh;
     } hoffset;
 
     struct {
-      int8_t hd0l;
-      int8_t hd0h;
-      int8_t hd1l;
-      int8_t hd1h;
-      int8_t hd2l;
-      int8_t hd2h;
-      int8_t hd3l;
-      int8_t hd3h;
+      uint8_t d0l;
+      uint8_t d0h;
+      uint8_t d1l;
+      uint8_t d1h;
+      uint8_t d2l;
+      uint8_t d2h;
+      uint8_t d3l;
+      uint8_t d3h;
     } pwmh;
 
     struct {
-      int8_t td0l;
-      int8_t td0h;
-      int8_t td1l;
-      int8_t td1h;
-      int8_t td2l;
-      int8_t td2h;
-      int8_t td3l;
-      int8_t td3h;
+      uint8_t d0l;
+      uint8_t d0h;
+      uint8_t d1l;
+      uint8_t d1h;
+      uint8_t d2l;
+      uint8_t d2h;
+      uint8_t d3l;
+      uint8_t d3h;
     } pwmt;
 
   } JY901_ctrl;

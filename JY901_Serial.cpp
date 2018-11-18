@@ -1,4 +1,6 @@
+
 #include "JY901_Serial.h"
+#include <Arduino.h>
 #include <Wire.h>
 #include <string.h>
 #include "JY901_Control.h"
@@ -271,7 +273,7 @@ int16_t CJY901::getMagRawZ() {
 
 /* ------------ (Host --> JY901) functions ------------ */
 void CJY901::saveConf(int saveFlag) {
-  JY901_SAVECONF[3] = saveConf;
+  JY901_SAVECONF[3] = saveFlag;
   Serial1.write(JY901_SAVECONF, 5);
 }  // save configuration
 
@@ -295,112 +297,122 @@ void CJY901::changeALG(int algFlag) {
 }  // change algorithm
 
 void CJY901::autoCaliGyro(int gyroFlag) {
-  JY901_GYROAUTOCALI[3] = gyroFlag;
-  Serial1.write(JY901_GYROAUTOCALI, 5);
+  JY901_GYROAUTO[3] = gyroFlag;
+  Serial1.write(JY901_GYROAUTO, 5);
 }  // auto gyro calibration
 
 void CJY901::confReport() {
-  ;
-  /* not figured out proper input data struct*/
-}
+  memcpy(&JY901_RPTCONF[3], &JY901_ctrl.report.confl, 2);
+  Serial1.write(JY901_RPTCONF, 5);
+}  // need to write conf to  JY901_ctrl.report.conf first
 
 void CJY901::setReportRate(int rateFlag) {
   JY901_RPTRT[3] = rateFlag;
   Serial1.write(JY901_RPTRT, 5);
 }
 
-void CJY901::setBaudRate(int) {
-  ;
+void CJY901::setBaudRate(int baudFlag) {
+  JY901_BAUDRT[3] = baudFlag;
+  Serial1.write(JY901_BAUDRT, 5);
 }
 
+/* ------To avoid negative value been changed, please use --------- */
+/* ------------------- memcpy() to set value of ------------------- */
+/* --- JY901_ctrl.aoffset JY901_ctrl.goffset JY901_ctrl.hoffset --- */
+/* ----------- For more please read the example folder ------------ */
 void CJY901::setAXoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_AXOFF[3], &JY901_ctrl.aoffset.xl, 2);
+  Serial1.write(JY901_AXOFF, 5);
 }
 void CJY901::setAYoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_AYOFF[3], &JY901_ctrl.aoffset.yl, 2);
+  Serial1.write(JY901_AYOFF, 5);
 }
 void CJY901::setAZoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_AZOFF[3], &JY901_ctrl.aoffset.zl, 2);
+  Serial1.write(JY901_AZOFF, 5);
 }
 
 void CJY901::setGXoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_GXOFF[3], &JY901_ctrl.goffset.xl, 2);
+  Serial1.write(JY901_GXOFF, 5);
 }
 void CJY901::setGYoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_GYOFF[3], &JY901_ctrl.goffset.yl, 2);
+  Serial1.write(JY901_GYOFF, 5);
 }
 void CJY901::setGZoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_GZOFF[3], &JY901_ctrl.goffset.zl, 2);
+  Serial1.write(JY901_GZOFF, 5);
 }
 
 void CJY901::setHXoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_HXOFF[3], &JY901_ctrl.hoffset.xl, 2);
+  Serial1.write(JY901_HXOFF, 5);
 }
 void CJY901::setHYoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_HYOFF[3], &JY901_ctrl.hoffset.yl, 2);
+  Serial1.write(JY901_HYOFF, 5);
 }
 void CJY901::setHZoffset() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_HZOFF[3], &JY901_ctrl.hoffset.zl, 2);
+  Serial1.write(JY901_HZOFF, 5);
 }
 
-void CJY901::setD0mode(int) {
-  ;
+void CJY901::setD0mode(int modeFlag) {
+  JY901_D0MODECONF[3] = modeFlag;
+  Serial1.write(JY901_D0MODECONF, 5);
 }
-void CJY901::setD1mode(int) {
-  ;
+void CJY901::setD1mode(int modeFlag) {
+  JY901_D1MODECONF[3] = modeFlag;
+  Serial1.write(JY901_D1MODECONF, 5);
 }
-void CJY901::setD2mode(int) {
-  ;
+void CJY901::setD2mode(int modeFlag) {
+  JY901_D2MODECONF[3] = modeFlag;
+  Serial1.write(JY901_D2MODECONF, 5);
 }
-void CJY901::setD3mode(int) {
-  ;
+void CJY901::setD3mode(int modeFlag) {
+  JY901_D3MODECONF[3] = modeFlag;
+  Serial1.write(JY901_D3MODECONF, 5);
 }
 
 void CJY901::setD0PWMH() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_D0PWMHCONF[3], &JY901_ctrl.pwmh.d0l, 2);
+  Serial1.write(JY901_D0PWMHCONF, 5);
 }
 void CJY901::setD1PWMH() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_D1PWMHCONF[3], &JY901_ctrl.pwmh.d1l, 2);
+  Serial1.write(JY901_D1PWMHCONF, 5);
 }
 void CJY901::setD2PWMH() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_D2PWMHCONF[3], &JY901_ctrl.pwmh.d2l, 2);
+  Serial1.write(JY901_D2PWMHCONF, 5);
 }
 void CJY901::setD3PWMH() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_D3PWMHCONF[3], &JY901_ctrl.pwmh.d3l, 2);
+  Serial1.write(JY901_D3PWMHCONF, 5);
 }
 
 void CJY901::setD0PWMT() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_D0PWMTCONF[3], &JY901_ctrl.pwmt.d0l, 2);
+  Serial1.write(JY901_D0PWMTCONF, 5);
 }
 void CJY901::setD1PWMT() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_D1PWMTCONF[3], &JY901_ctrl.pwmt.d1l, 2);
+  Serial1.write(JY901_D1PWMTCONF, 5);
 }
 void CJY901::setD2PWMT() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_D2PWMTCONF[3], &JY901_ctrl.pwmt.d2l, 2);
+  Serial1.write(JY901_D2PWMTCONF, 5);
 }
 void CJY901::setD3PWMT() {
-  ;
-  /* not figured out proper input data struct*/
+  memcpy(&JY901_D3PWMTCONF[3], &JY901_ctrl.pwmt.d3l, 2);
+  Serial1.write(JY901_D3PWMTCONF, 5);
 }
 
-void CJY901::setIICaddr(int) {
-  ;
+void CJY901::setIICaddr(int addrFlag) {
+  JY901_IICADDRESS[3] = addrFlag;
+  Serial1.write(JY901_IICADDRESS, 5);
 }
 
 void CJY901::turnLED(int ledFlag) {
@@ -412,8 +424,9 @@ void CJY901::turnLED(int ledFlag) {
     Serial.println("LED off");
 }  // turn off LED, send again to lighten
 
-void CJY901::setGPSrate(int) {
-  ;
+void CJY901::setGPSrate(int gpsFlag) {
+  JY901_GPSBAUDRATE[3] = gpsFlag;
+  Serial1.write(JY901_GPSBAUDRATE, 5);
 }
 
 CJY901 JY901;
