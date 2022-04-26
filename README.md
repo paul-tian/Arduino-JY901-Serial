@@ -1,6 +1,7 @@
 # Arduino-JY901-Serial
 This is a fork of repo [arduino-JY901](https://github.com/BGD-Libraries/arduino-JY901).
-The original repo has no update for a long time, thus I detached my fork and made it an independent one.
+
+The original repo has no update after March 2017, thus I detached my fork and made it an independent one.
 
 ## JY901 IMU Demo for Arduino MKR1000/WiFi1010 Serial connection.
 
